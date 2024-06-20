@@ -1,5 +1,7 @@
-use iced::widget::text_editor;
-use iced::{Element, Sandbox, Settings};
+
+use iced::widget::{column, container, text_editor, Text};
+
+use iced::{Theme, Element, Sandbox, Settings};
 
 
 fn main() -> iced::Result{
@@ -39,6 +41,19 @@ impl Sandbox for Editor {
     }
 
     fn view(&self) -> Element<'_, Message> {
-        text_editor(&self.content).on_action(Message::Edit).into()
+        let input = text_editor(&self.content).on_action(Message::Edit);
+
+        let position = {
+            let (line, column) = self.content.cursor_position();
+            //text(format:("{}:{}", line + 1, column + 1))
+            Text::new(format!("{}:{}", line + 1, column + 1))
+            
+        };
+
+        container(column![input, position]).padding(10).into()
+    }
+
+    fn theme(&self) -> Theme {
+        Theme::GruvboxDark
     }
 }
