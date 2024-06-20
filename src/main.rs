@@ -10,9 +10,10 @@ struct Editor
 {
     content: text_editor::Content,
 }
+
 #[derive(Debug, Clone)]
 enum Message {
-    Edit(text_editor::Action)
+    Edit(text_editor::Action),
 }
 
 impl Sandbox for Editor {
@@ -31,13 +32,13 @@ impl Sandbox for Editor {
 
     fn update(&mut self, message: Message) {
         match message {
-            Message::Edit(action) -> {
-                self.content.edit(action);
+            Message::Edit(action) => {
+                self.content.perform(action);
             }
         }
     }
 
     fn view(&self) -> Element<'_, Message> {
-        text_editor(&self.content).on_edit(Message::Edit).into()
+        text_editor(&self.content).on_action(Message::Edit).into()
     }
 }
